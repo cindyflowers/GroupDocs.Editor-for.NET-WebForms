@@ -13,7 +13,7 @@
             <asp:FileUpload ID="fileupload" runat="server"  />
             <br /><br /><br />
             <h1><p>Push this button and files will be stored in project Export directory</p></h1>
-            <asp:Button ID="butDownloadHTML" runat="server" Text="Download as DOCX, PDF and HTML" OnClick="butDownloadHTML_Click"/>
+            <asp:Button ID="butDownloadHTML" runat="server" Text="Save as DOCX, PDF, EmbeddedHTML and HTML" OnClick="butDownloadHTML_Click"/>
             <br /><br /><br />
             <h1><asp:Label ID="lblStatus" runat="server"></asp:Label></h1>
         </div>

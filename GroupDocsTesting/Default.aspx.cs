@@ -28,23 +28,32 @@ namespace GroupDocsTesting
                     string filename = Path.GetFileName(fileupload.FileName);
                     string fullpath = Server.MapPath("/Uploaded/") +myDate + filename;
                     string fullpathExportDocX = fullpath.Replace(".docx", "-GroupDocsExport.docx");
+                    string fullpathExportEmbeddedHTML = fullpath.Replace(".docx", "-GroupDocsExportEmbedded.html");
                     string fullpathExportHTML = fullpath.Replace(".docx", "-GroupDocsExport.html");
                     string fullpathExportPDF = fullpath.Replace(".docx", "-GroupDocsExport.pdf");
                     fullpathExportDocX = fullpathExportDocX.Replace("Uploaded", "Exported");
                     fullpathExportHTML = fullpathExportHTML.Replace("Uploaded", "Exported");
                     fullpathExportPDF = fullpathExportPDF.Replace("Uploaded", "Exported");
+                    fullpathExportEmbeddedHTML = fullpathExportEmbeddedHTML.Replace("Uploaded", "Exported");
                     fileupload.SaveAs(fullpath);
                     using (Editor editor = new Editor(fullpath))
                     {
                         WordProcessingEditOptions editOptions = new WordProcessingEditOptions();
                         editOptions.EnablePagination = false;
                         EditableDocument readyToSave = editor.Edit(editOptions);
+                        
                         if (!string.IsNullOrEmpty(fullpathExportDocX))
                             editor.Save(readyToSave, fullpathExportDocX, new WordProcessingSaveOptions(WordProcessingFormats.Docx));
                         if (!string.IsNullOrEmpty(fullpathExportPDF))
                             editor.Save(readyToSave, fullpathExportPDF, new PdfSaveOptions());
                         if (!string.IsNullOrEmpty(fullpathExportHTML))
                             readyToSave.Save(fullpathExportHTML);
+                        if (!string.IsNullOrEmpty(fullpathExportEmbeddedHTML))
+                        {
+                            var html = readyToSave.GetEmbeddedHtml();
+                            File.WriteAllText(fullpathExportEmbeddedHTML, html);
+                        }
+
                         readyToSave.Dispose();
                         editor.Dispose();
                     }
